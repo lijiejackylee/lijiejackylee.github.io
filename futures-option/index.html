@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>期货期权便宜度监控 · 2026-08-07</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#ffffff; --line:#e6e8eb; --txt:#1f2328;
+           --muted:#6b7280; --accent:#c0392b; --accent2:#2563eb; --ok:#16a34a; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif; font-size:14px; }
+  .wrap { max-width:1280px; margin:0 auto; padding:28px 20px 60px; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:13px; margin-bottom:20px; }
+  .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px; }
+  .card .k { font-size:12px; color:var(--muted); }
+  .card .v { font-size:26px; font-weight:700; margin-top:6px; }
+  .card .v.red { color:var(--accent); }
+  h2 { font-size:16px; margin:26px 0 12px; }
+  h3 { font-size:14px; margin:20px 0 10px; color:var(--muted); }
+  table { width:100%; border-collapse:collapse; background:var(--card);
+    border:1px solid var(--line); border-radius:12px; overflow:hidden; font-size:13px; }
+  th,td { padding:7px 9px; text-align:left; border-bottom:1px solid var(--line);
+    white-space:nowrap; }
+  th { background:#fafbfc; color:var(--muted); font-weight:600; font-size:12px; }
+  td.num,th.num { text-align:right; }
+  .num { text-align:right; font-variant-numeric:tabular-nums; }
+  .mono { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  .strong { font-weight:700; color:var(--accent); }
+  .small { font-size:12px; color:var(--muted); }
+  tr:last-child td { border-bottom:none; }
+  .badge { padding:2px 7px; border-radius:20px; font-size:10px; font-weight:700; color:#fff;
+    display:inline-block; }
+  .b-hot { background:var(--accent); }
+  .b-warn { background:#e08e0b; }
+  .b-new { background:var(--accent2); }
+  .b-cont { background:#9ca3af; }
+  .b-acc { background:#c0392b; }    /* 增仓：红（涨=红，主动建仓） */
+  .b-unw { background:#16a34a; }    /* 减仓：绿 */
+  .b-churn { background:#e08e0b; }  /* 换手：橙 */
+  .b-static { background:#9ca3af; } /* 持平：灰 */
+  .b-vol-cheap { background:var(--accent2); }  /* 低 IV（波动率便宜） */
+  .b-vol-normal { background:#9ca3af; }
+  .c-vol-cheap { color:var(--accent2); font-weight:700; }   /* VRP<0：IV低于已实现=便宜 */
+  .c-vol-rich { color:#9ca3af; }                            /* VRP>0：IV偏贵 */
+  .empty { padding:26px; text-align:center; color:var(--muted);
+    background:var(--card); border:1px dashed var(--line); border-radius:12px; }
+  .note { margin-top:24px; font-size:12px; color:var(--muted); line-height:1.7;
+    background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; }
+</style></head>
+<body><div class="wrap">
+  <h1>期货期权「足够便宜」监控看板</h1>
+  <div class="sub">数据日期 2026-08-07（前一交易日收盘价） · 生成于 2026-08-08 09:04 · 数据源 akshare（新浪日线收盘价）</div>
+
+  <div class="cards">
+    <div class="card"><div class="k">命中便宜期权</div><div class="v red">0 </div></div>
+    <div class="card"><div class="k">主流品种（成交活跃）</div><div class="v">5</div></div>
+    <div class="card"><div class="k">已历史标定品种</div><div class="v">22</div></div>
+    <div class="card"><div class="k">10日内到期窗口</div><div class="v">1-14日</div></div>
+  </div>
+
+  <h2>🔔 命中的便宜期权（值得关注）</h2>
+  <div class="empty">今日没有满足条件的"足够便宜"期权。市场平静时这很正常——机会通常在临近到期、行情剧烈时出现。</div>
+
+  <h2>📊 主流品种概览与历史表现</h2>
+  <table>
+      <thead><tr>
+        <th>品种</th><th class="num">近月总持仓量</th><th class="num">便宜阈值</th><th class="num">历史30倍+</th>
+        <th class="num">最高倍数</th><th class="num">典型入场价</th><th>10日内合约</th><th class="num">今日命中</th>
+      </tr></thead>
+      <tbody><tr>
+          <td>白银期权</td>
+          <td class="num">126151</td>
+          <td class="num">153.0</td>
+          <td class="num">0.8%</td>
+          <td class="num">85×</td>
+          <td class="num">119.5</td>
+          <td class="small">ag2609(剩12日)</td>
+          <td class="num">0</td>
+        </tr><tr>
+          <td>沪铜期权</td>
+          <td class="num">100548</td>
+          <td class="num">60.0</td>
+          <td class="num">0.2%</td>
+          <td class="num">40×</td>
+          <td class="num">32.0</td>
+          <td class="small">cu2609(剩12日)</td>
+          <td class="num">0</td>
+        </tr><tr>
+          <td>沪铝期权</td>
+          <td class="num">88207</td>
+          <td class="num">23.8</td>
+          <td class="num">1.1%</td>
+          <td class="num">306×</td>
+          <td class="num">13.0</td>
+          <td class="small">al2609(剩12日)</td>
+          <td class="num">0</td>
+        </tr><tr>
+          <td>橡胶期权</td>
+          <td class="num">58822</td>
+          <td class="num">11.0</td>
+          <td class="num">0.5%</td>
+          <td class="num">355×</td>
+          <td class="num">5.0</td>
+          <td class="small">ru2609(剩12日)</td>
+          <td class="num">0</td>
+        </tr><tr>
+          <td>黄金期权</td>
+          <td class="num">38328</td>
+          <td class="num">2.896</td>
+          <td class="num">3.0%</td>
+          <td class="num">103×</td>
+          <td class="num">1.8</td>
+          <td class="small">au2609(剩12日)</td>
+          <td class="num">0</td>
+        </tr></tbody>
+    </table>
+
+  <div class="note">
+    <b>筛选口径</b>：主流品种 = 10 日内近月合约总持仓量 ≥ 30000；
+    主流期权 = 单腿持仓量 ≥ 2000（用户口径"数千及以上"）；
+    到期窗口 = 剩余 1–14 个交易日；
+    <b>只看平值上下 3 档</b>：平值行权价由期权链本身估算
+    （看涨≈看跌权利金的交点 ≈ 标的期货现价），仅保留距平值上下各 3 档的合约，过滤深度虚值。<br>
+    <b>"足够便宜"</b>：对每个品种回溯历史已到期合约，在"距到期 ≤ 14 日"的每一天，
+    考察其后 10 个交易日内最高价 / 当日收盘是否 ≥ 30 倍；
+    取所有成功入场价的第 80 分位数作为该品种"便宜阈值"。
+    当前权利金 ≤ 阈值即视为足够便宜。未标定品种使用兜底口径：
+    三层兜底取最大 = (1) 固定下限 0.5 点 (2) 权利金中位数的 30% (3) 正权利金第 20 分位数。<br>
+    <b>新晋标记</b>：🆕新晋 = 该期权今日首次进入便宜区间（昨日不在命中列表）；↻持续 = 昨日已在命中列表中。<br>
+    <b>持仓变化</b>（OI 微观结构，较上次扫描的持仓量环比）：<span class="badge b-acc">增仓</span>=持仓显著增加（新资金建仓，值得关注）；<span class="badge b-unw">减仓</span>=持仓显著减少（离场/平仓）；<span class="badge b-churn">换手</span>=高成交量但持仓几乎不变（日内对倒，无方向）；<span class="badge b-static">持平</span>=基本不变；<span class="badge b-new">新</span>=首次观测（新上市或数据首见）。判断标准：|ΔOI| &gt; max(50, 10%×上次OI) 为显著；换手 = 量&gt;50 且 量&gt;5×|ΔOI|。<br>
+    <b>波动率</b>（Black-76 反推隐含波动率，标的价用平值档代理）：<span class="badge b-vol-cheap">低IV</span>=该合约 IV 位于本期权链第 25 分位以内（链内相对便宜的波动率）；<span class="c-vol-cheap">VRP</span>=隐含波动率 − 标的 30 日已实现波动率，VRP&lt;0（蓝色）表示波动率被低估、买方有利，VRP&gt;0（灰色）表示偏贵。<br>
+    <b>情景倍数</b>：假设标的在到期前向有利方向移动 ±25% / ±50%（看涨=涨、看跌=跌），按该合约当前 IV 用 Black-76 前向定价，得出"当前权利金能翻几倍"。红色高亮 = ±25% 情景已超 3 倍（彩票潜力突出）。这是前向估计，不依赖历史 30× 样本。<br>
+    <b>DTE 分段</b>：1–5 日为极致彩票窗口（高 gamma），6–10 日为甜蜜区，11–14 日为温和窗口。<br>
+    <b>走势图</b>：每张命中期权的权利金日线历史 + 红色虚线 = 便宜阈值 + 蓝色圆点 = 当前价。一眼可判断是否有新入场机会。<br>
+    <b>风险提示</b>：深度虚值临期期权是典型"彩票型"合约，30 倍机会是小概率事件，绝大多数会归零。
+    本工具仅做行情监控与提示，<b>不构成任何投资建议</b>。
+  </div>
+</div></body></html>
