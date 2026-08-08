@@ -51,7 +51,7 @@
 </style></head>
 <body><div class="wrap">
   <h1>期货期权「足够便宜」监控看板</h1>
-  <div class="sub">数据日期 2026-08-07（前一交易日收盘价） · 生成于 2026-08-08 09:55 · 数据源 akshare（新浪日线收盘价）</div>
+  <div class="sub">数据日期 2026-08-07（前一交易日收盘价） · 生成于 2026-08-08 10:53 · 数据源 akshare（新浪日线收盘价）</div>
 
   <div class="cards">
     <div class="card"><div class="k">命中便宜期权</div><div class="v red">0 </div></div>
@@ -132,6 +132,7 @@
     <b>信号分</b>（组合评分 0~4，与微信推送同一口径）：<span class="badge b-acc">≥2分</span> = 强信号（红色）；1 分=中等（橙）；0 分=基础（灰）。计分 = 新晋+1 / OI增仓+1（减仓-1）/ 低IV或VRP&lt;0 +1 / 情景±25%倍数≥3 +1。看板按信号分从高到低排序。<br>
     <b>标的活跃度</b>：标的期货 30 日已实现波动率分档——<span class="c-vol-cheap">标的高波动</span>（RV30≥20%，爆发基础好）/ 灰色"标的中/低波动"（低波动品种即使期权便宜，爆炸概率也低，需谨慎）。<br>
     <b>催化剂</b>：该品种未来 21 天内最近的重要报告/数据（USDA 供需报告、MPOB 棕榈油、OPEC 月报、EIA 库存、非农、FOMC、中国宏观数据等，自动规则生成 + 百度经济日历抓取）。<span class="badge b-hot">事件3天内</span> = 即将引爆（红）；<span class="badge b-churn">7天内</span> = 临近（橙）。便宜期权 + 临近催化剂 = 最佳彩票窗口。<br>
+    <b>反身性</b>：<span class="badge b-hot">🔻反身性</span> = 标的期货下跌 + 该期权 IV 上升 + 持仓量上升同时发生（跌幅&gt;0.5%、IV升幅&gt;5%），市场正在为下跌定价、尾部事件形成中，对看跌彩票是强信号（借鉴 younjc/convexity-scanner 的 reflexivity 检测）。<br>
     <b>持仓变化</b>（OI 微观结构，较上次扫描的持仓量环比）：<span class="badge b-acc">增仓</span>=持仓显著增加（新资金建仓，值得关注）；<span class="badge b-unw">减仓</span>=持仓显著减少（离场/平仓）；<span class="badge b-churn">换手</span>=高成交量但持仓几乎不变（日内对倒，无方向）；<span class="badge b-static">持平</span>=基本不变；<span class="badge b-new">新</span>=首次观测（新上市或数据首见）。判断标准：|ΔOI| &gt; max(50, 10%×上次OI) 为显著；换手 = 量&gt;50 且 量&gt;5×|ΔOI|。<br>
     <b>波动率</b>（Black-76 反推隐含波动率，标的价用平值档代理）：<span class="badge b-vol-cheap">低IV</span>=该合约 IV 位于本期权链第 25 分位以内（链内相对便宜的波动率）；<span class="c-vol-cheap">VRP</span>=隐含波动率 − 标的 30 日已实现波动率，VRP&lt;0（蓝色）表示波动率被低估、买方有利，VRP&gt;0（灰色）表示偏贵。<br>
     <b>情景倍数</b>：假设标的在到期前向有利方向移动 ±25% / ±50%（看涨=涨、看跌=跌），按该合约当前 IV 用 Black-76 前向定价，得出"当前权利金能翻几倍"。红色高亮 = ±25% 情景已超 3 倍（彩票潜力突出）。这是前向估计，不依赖历史 30× 样本。<br>
