@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>期货期权便宜度监控 · 2026-09-24</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#ffffff; --line:#e6e8eb; --txt:#1f2328;
+           --muted:#6b7280; --accent:#c0392b; --accent2:#2563eb; --ok:#16a34a; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif; font-size:14px; }
+  .wrap { max-width:1280px; margin:0 auto; padding:28px 20px 60px; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:13px; margin-bottom:20px; }
+  .cards { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:24px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:16px 18px; }
+  .card .k { font-size:12px; color:var(--muted); }
+  .card .v { font-size:26px; font-weight:700; margin-top:6px; }
+  .card .v.red { color:var(--accent); }
+  h2 { font-size:16px; margin:26px 0 12px; }
+  h3 { font-size:14px; margin:20px 0 10px; color:var(--muted); }
+  table { width:100%; border-collapse:collapse; background:var(--card);
+    border:1px solid var(--line); border-radius:12px; overflow:hidden; font-size:13px; }
+  th,td { padding:7px 9px; text-align:left; border-bottom:1px solid var(--line);
+    white-space:nowrap; }
+  th { background:#fafbfc; color:var(--muted); font-weight:600; font-size:12px; }
+  td.num,th.num { text-align:right; }
+  .num { text-align:right; font-variant-numeric:tabular-nums; }
+  .mono { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; }
+  .strong { font-weight:700; color:var(--accent); }
+  .small { font-size:12px; color:var(--muted); }
+  tr:last-child td { border-bottom:none; }
+  .badge { padding:2px 7px; border-radius:20px; font-size:10px; font-weight:700; color:#fff;
+    display:inline-block; }
+  .b-hot { background:var(--accent); }
+  .b-warn { background:#e08e0b; }
+  .b-new { background:var(--accent2); }
+  .b-cont { background:#9ca3af; }
+  .b-acc { background:#c0392b; }    /* 增仓：红（涨=红，主动建仓） */
+  .b-unw { background:#16a34a; }    /* 减仓：绿 */
+  .b-churn { background:#e08e0b; }  /* 换手：橙 */
+  .b-static { background:#9ca3af; } /* 持平：灰 */
+  .b-vol-cheap { background:var(--accent2); }  /* 低 IV（波动率便宜） */
+  .b-vol-normal { background:#9ca3af; }
+  .c-vol-cheap { color:var(--accent2); font-weight:700; }   /* VRP<0：IV低于已实现=便宜 */
+  .c-vol-rich { color:#9ca3af; }                            /* VRP>0：IV偏贵 */
+  .empty { padding:26px; text-align:center; color:var(--muted);
+    background:var(--card); border:1px dashed var(--line); border-radius:12px; }
+  .note { margin-top:24px; font-size:12px; color:var(--muted); line-height:1.7;
+    background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; }
+</style></head>
+<body><div class="wrap">
+  <h1>期货期权「足够便宜」监控看板</h1>
+  <div class="sub">数据日期 2026-09-24（前一交易日收盘价） · 生成于 2026-09-25 20:38 · 数据源 akshare（新浪日线收盘价）</div>
+
+  <div class="cards">
+    <div class="card"><div class="k">命中便宜期权</div><div class="v red">10 </div></div>
+    <div class="card"><div class="k">主流品种（成交活跃）</div><div class="v">11</div></div>
+    <div class="card"><div class="k">已历史标定品种</div><div class="v">22</div></div>
+    <div class="card"><div class="k">10日内到期窗口</div><div class="v">1-14日</div></div>
+  </div>
+
+  <h2>🔔 命中的便宜期权（值得关注）</h2>
+  <h3>⏱ 甜蜜区 — 6–10 日到期（10 个）</h3>
+        <table>
+          <thead><tr>
+            <th>状态</th><th style="text-align:center">信号分</th><th>期权代码</th><th>品种</th><th>方向</th><th class="num">行权价</th>
+            <th>距平值</th><th class="num">收盘权利金</th><th class="num">便宜阈值</th><th class="num">价/阈值</th><th class="num">剩余日</th>
+            <th class="num">持仓量</th><th class="num">成交量</th><th style="text-align:center">持仓变化</th><th style="text-align:center">波动率</th><th style="text-align:center">情景倍数</th><th style="text-align:center">催化剂</th><th style="text-align:center">走势</th><th>历史依据</th>
+          </tr></thead>
+          <tbody><tr>
+              <td><span class="badge b-cont">↻持续</span></td>
+              <td style="text-align:center"><span class="badge b-acc" title="组合信号分">2分</span></td>
+              <td class="mono">sr2611P5100</td>
+              <td>白糖期权</td>
+              <td>看跌</td>
+              <td class="num">5100.0</td>
+              <td class="num">-1档</td>
+              <td class="num strong">4.0</td>
+              <td class="num">12.825</td>
+              <td class="num">0.31</td>
+              <td class="num">7</td>
+              <td class="num">18845</td>
+              <td class="num">7966</td>
+              <td style="text-align:center"><span class="badge b-churn">换手</span></td>
+              <td style="text-align:center"><span class="badge b-vol-cheap">低IV</span><span class="small" style="display:block">18%</span><br><span class="small c-vol-rich">VRP +0.6%</span><br><span class="small c-vol-rich">标的低波动</span></td>
+              <td style="text-align:center"><span class="small" style="color:var(--accent);font-weight:700">±25% → ×300.0<br>±50% → ×625.0</span></td>
+              <td style="text-align:center"><span class="small" title="USDA 周度出口销售报告">事件13天</span></td>
+              <td style="text-align:center"><svg width="160" height="50" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg" style="display:block"><rect x="0" y="0" width="160" height="50" fill="#f1f5f9" rx="2"/> <path d="M0.0,4.2 L5.5,4.2 L11.0,0.0 L16.6,6.8 L22.1,12.5 L27.6,12.5 L33.1,14.6 L38.6,11.5 L44.1,10.9 L49.7,17.2 L55.2,29.7 L60.7,28.1 L66.2,28.1 L71.7,28.6 L77.2,37.0 L82.8,38.5 L88.3,42.7 L93.8,45.8 L99.3,44.3 L104.8,41.1 L110.3,41.7 L115.9,36.5 L121.4,35.9 L126.9,38.5 L132.4,33.9 L137.9,36.5 L143.4,36.5 L149.0,41.7 L154.5,46.9 L160.0,50.0" fill="none" stroke="#475569" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <line x1="0" y1="40.8" x2="160" y2="40.8" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4,3"/> <circle cx="160.0" cy="50.0" r="3.5" fill="#1e40af" stroke="#fff" stroke-width="1.2"/></svg></td>
+              <td class="small">兜底</td>
+            </tr><tr>
+              <td><span class="badge b-cont">↻持续</span></td>
+              <td style="text-align:center"><span class="badge b-acc" title="组合信号分">2分</span></td>
+              <td class="mono">rm2611P2250</td>
+              <td>菜籽粕期权</td>
+              <td>看跌</td>
+              <td class="num">2250.0</td>
+              <td class="num">-3档</td>
+              <td class="num strong">9.0</td>
+              <td class="num">21.9</td>
+              <td class="num">0.41</td>
+              <td class="num">7</td>
+              <td class="num">6003</td>
+              <td class="num">13361</td>
+              <td style="text-align:center"><span class="badge b-churn">换手</span></td>
+              <td style="text-align:center"><span class="badge b-vol-cheap">低IV</span><span class="small" style="display:block">7%</span><br><span class="small c-vol-cheap">VRP -4.8%</span><br><span class="small c-vol-cheap">标的高波动</span></td>
+              <td style="text-align:center"><span class="small" style="color:var(--accent);font-weight:700">±25% → ×56.25<br>±50% → ×120.83</span></td>
+              <td style="text-align:center"><span class="small">—</span></td>
+              <td style="text-align:center"><svg width="160" height="50" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg" style="display:block"><rect x="0" y="0" width="160" height="50" fill="#f1f5f9" rx="2"/> <path d="M0.0,0.0 L5.5,2.8 L11.0,20.4 L16.6,27.7 L22.1,29.6 L27.6,15.4 L33.1,17.9 L38.6,20.4 L44.1,34.9 L49.7,40.3 L55.2,39.3 L60.7,37.4 L66.2,40.9 L71.7,39.0 L77.2,44.3 L82.8,46.5 L88.3,45.0 L93.8,45.9 L99.3,45.9 L104.8,41.8 L110.3,41.5 L115.9,35.2 L121.4,38.7 L126.9,47.8 L132.4,49.4 L137.9,44.7 L143.4,42.5 L149.0,48.1 L154.5,48.1 L160.0,50.0" fill="none" stroke="#475569" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <line x1="0" y1="41.9" x2="160" y2="41.9" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4,3"/> <circle cx="160.0" cy="50.0" r="3.5" fill="#1e40af" stroke="#fff" stroke-width="1.2"/></svg></td>
+              <td class="small">兜底</td>
+            </tr><tr>
+              <td><span class="badge b-cont">↻持续</span></td>
+              <td style="text-align:center"><span class="badge b-acc" title="组合信号分">2分</span></td>
+              <td class="mono">rm2611P2275</td>
+              <td>菜籽粕期权</td>
+              <td>看跌</td>
+              <td class="num">2275.0</td>
+              <td class="num">-2档</td>
+              <td class="num strong">15.5</td>
+              <td class="num">21.9</td>
+              <td class="num">0.71</td>
+              <td class="num">7</td>
+              <td class="num">3951</td>
+              <td class="num">2841</td>
+              <td style="text-align:center"><span class="badge b-churn">换手</span></td>
+              <td style="text-align:center"><span class="badge b-vol-cheap">低IV</span><span class="small" style="display:block">14%</span><br><span class="small c-vol-cheap">VRP -4.8%</span><br><span class="small c-vol-cheap">标的高波动</span></td>
+              <td style="text-align:center"><span class="small" style="color:var(--accent);font-weight:700">±25% → ×34.27<br>±50% → ×71.77</span></td>
+              <td style="text-align:center"><span class="small">—</span></td>
+              <td style="text-align:center"><svg width="160" height="50" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg" style="display:block"><rect x="0" y="0" width="160" height="50" fill="#f1f5f9" rx="2"/> <path d="M0.0,1.9 L5.5,0.0 L11.0,17.2 L16.6,22.5 L22.1,27.2 L27.6,13.6 L33.1,14.7 L38.6,17.5 L44.1,33.6 L49.7,39.4 L55.2,38.3 L60.7,35.8 L66.2,40.0 L71.7,36.7 L77.2,43.6 L82.8,46.1 L88.3,44.2 L93.8,45.6 L99.3,45.3 L104.8,40.8 L110.3,40.3 L115.9,33.6 L121.4,37.8 L126.9,47.8 L132.4,50.0 L137.9,43.1 L143.4,40.3 L149.0,46.9 L154.5,47.2 L160.0,48.9" fill="none" stroke="#475569" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <line x1="0" y1="45.3" x2="160" y2="45.3" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4,3"/> <circle cx="160.0" cy="48.9" r="3.5" fill="#1e40af" stroke="#fff" stroke-width="1.2"/></svg></td>
+              <td class="small">兜底</td>
+            </tr><tr>
+              <td><span class="badge b-cont">↻持续</span></td>
+              <td style="text-align:center"><span class="badge b-acc" title="组合信号分">2分</span></td>
+              <td class="mono">si2611P8200</td>
+              <td>工业硅期权</td>
+              <td>看跌</td>
+              <td class="num">8200.0</td>
+              <td class="num">-3档</td>
+              <td class="num strong">10.0</td>
+              <td class="num">13.2</td>
+              <td class="num">0.76</td>
+              <td class="num">8</td>
+              <td class="num">2381</td>
+              <td class="num">1281</td>
+              <td style="text-align:center"><span class="badge b-churn">换手</span></td>
+              <td style="text-align:center"><span class="badge b-vol-normal">IV分位</span><span class="small" style="display:block">46%</span><br><span class="small c-vol-cheap">VRP -4.3%</span></td>
+              <td style="text-align:center"><span class="small" style="color:var(--accent);font-weight:700">±25% → ×182.5<br>±50% → ×395.0</span></td>
+              <td style="text-align:center"><span class="small" title="中国官方制造业 PMI">事件13天</span></td>
+              <td style="text-align:center"><svg width="160" height="50" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg" style="display:block"><rect x="0" y="0" width="160" height="50" fill="#f1f5f9" rx="2"/> <path d="M0.0,8.3 L5.5,0.0 L11.0,1.4 L16.6,20.8 L22.1,11.1 L27.6,18.1 L33.1,8.3 L38.6,13.9 L44.1,20.8 L49.7,29.2 L55.2,25.0 L60.7,36.1 L66.2,27.8 L71.7,16.7 L77.2,31.9 L82.8,38.9 L88.3,36.1 L93.8,50.0 L99.3,48.6 L104.8,44.4 L110.3,29.2 L115.9,22.2 L121.4,5.6 L126.9,6.9 L132.4,15.3 L137.9,12.5 L143.4,31.9 L149.0,38.9 L154.5,50.0 L160.0,50.0" fill="none" stroke="#475569" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <line x1="0" y1="45.6" x2="160" y2="45.6" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4,3"/> <circle cx="160.0" cy="50.0" r="3.5" fill="#1e40af" stroke="#fff" stroke-width="1.2"/></svg></td>
+              <td class="small">5次(0.1%)</td>
+            </tr><tr>
+              <td><span class="badge b-cont">↻持续</span></td>
+              <td style="text-align:center"><span class="badge b-acc" title="组合信号分">2分</span></td>
+              <td class="mono">sh2611P1800</td>
+              <td>烧碱期权</td>
+              <td>看跌</td>
+              <td class="num">1800.0</td>
+              <td class="num">-3档</td>
+              <td class="num strong">6.0</td>
+              <td class="num">7.0</td>
+              <td class="num">0.86</td>
+              <td class="num">7</td>
+              <td class="num">5477</td>
+              <td class="num">11211</td>
+              <td style="text-align:center"><span class="badge b-churn">换手</span></td>
+              <td style="text-align:center"><span class="badge b-vol-cheap">低IV</span><span class="small" style="display:block">7%</span><br><span class="small c-vol-cheap">VRP -2.8%</span><br><span class="small c-vol-cheap">标的高波动</span></td>
+              <td style="text-align:center"><span class="small" style="color:var(--accent);font-weight:700">±25% → ×67.5<br>±50% → ×145.0</span></td>
+              <td style="text-align:center"><span class="small" title="中国官方制造业 PMI">事件13天</span></td>
+              <td style="text-align:center"><svg width="160" height="50" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg" style="display:block"><rect x="0" y="0" width="160" height="50" fill="#f1f5f9" rx="2"/> <path d="M0.0,0.0 L5.5,16.0 L11.0,27.0 L16.6,31.0 L22.1,28.0 L27.6,30.0 L33.1,40.0 L38.6,36.0 L44.1,37.0 L49.7,31.0 L55.2,36.0 L60.7,40.0 L66.2,43.0 L71.7,30.0 L77.2,26.0 L82.8,40.0 L88.3,42.0 L93.8,50.0 L99.3,49.0 L104.8,50.0 L110.3,46.0 L115.9,38.0 L121.4,41.0 L126.9,46.0 L132.4,43.0 L137.9,43.0 L143.4,45.0 L149.0,41.0 L154.5,41.0 L160.0,47.0" fill="none" stroke="#475569" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <line x1="0" y1="45.0" x2="160" y2="45.0" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4,3"/> <circle cx="160.0" cy="47.0" r="3.5" fill="#1e40af" stroke="#fff" stroke-width="1.2"/></svg></td>
+              <td class="small">46次(1.4%)</td>
+            </tr><tr>
+              <td><span class="badge b-cont">↻持续</span></td>
+              <td style="text-align:center"><span class="badge b-acc" title="组合信号分">2分</span></td>
+              <td class="mono">rm2611C2400</td>
+              <td>菜籽粕期权</td>
+              <td>看涨</td>
+              <td class="num">2400.0</td>
+              <td class="num">+3档</td>
+              <td class="num strong">19.5</td>
+              <td class="num">21.9</td>
+              <td class="num">0.89</td>
+              <td class="num">7</td>
+              <td class="num">8422</td>
+              <td class="num">25625</td>
+              <td style="text-align:center"><span class="badge b-churn">换手</span></td>
+              <td style="text-align:center"><span class="badge b-vol-normal">IV分位</span><span class="small" style="display:block">100%</span><br><span class="small c-vol-cheap">VRP -4.8%</span><br><span class="small c-vol-cheap">标的高波动</span></td>
+              <td style="text-align:center"><span class="small" style="color:var(--accent);font-weight:700">±25% → ×25.96<br>±50% → ×55.77</span></td>
+              <td style="text-align:center"><span class="small">—</span></td>
+              <td style="text-align:center"><svg width="160" height="50" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg" style="display:block"><rect x="0" y="0" width="160" height="50" fill="#f1f5f9" rx="2"/> <path d="M0.0,50.0 L5.5,47.5 L11.0,39.1 L16.6,36.1 L22.1,35.1 L27.6,45.0 L33.1,44.6 L38.6,44.1 L44.1,22.8 L49.7,10.9 L55.2,17.8 L60.7,24.3 L66.2,17.8 L71.7,28.2 L77.2,13.4 L82.8,4.0 L88.3,14.9 L93.8,12.4 L99.3,13.4 L104.8,27.7 L110.3,28.7 L115.9,43.1 L121.4,42.6 L126.9,9.9 L132.4,0.0 L137.9,35.1 L143.4,42.1 L149.0,35.6 L154.5,41.6 L160.0,41.6" fill="none" stroke="#475569" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <line x1="0" y1="39.2" x2="160" y2="39.2" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4,3"/> <circle cx="160.0" cy="41.6" r="3.5" fill="#1e40af" stroke="#fff" stroke-width="1.2"/></svg></td>
+              <td class="small">兜底</td>
+            </tr><tr>
+              <td><span class="badge b-cont">↻持续</span></td>
+              <td style="text-align:center"><span class="badge b-churn">1分</span></td>
+              <td class="mono">sr2611P4900</td>
+              <td>白糖期权</td>
+              <td>看跌</td>
+              <td class="num">4900.0</td>
+              <td class="num">-3档</td>
+              <td class="num strong">1.0</td>
+              <td class="num">12.825</td>
+              <td class="num">0.08</td>
+              <td class="num">7</td>
+              <td class="num">4689</td>
+              <td class="num">952</td>
+              <td style="text-align:center"><span class="badge b-churn">换手</span></td>
+              <td style="text-align:center"><span class="badge b-vol-normal">IV分位</span><span class="small" style="display:block">46%</span><br><span class="small c-vol-rich">VRP +0.6%</span><br><span class="small c-vol-rich">标的低波动</span></td>
+              <td style="text-align:center"><span class="small" style="color:var(--accent);font-weight:700">±25% → ×1000.0<br>±50% → ×2300.0</span></td>
+              <td style="text-align:center"><span class="small" title="USDA 周度出口销售报告">事件13天</span></td>
+              <td style="text-align:center"><svg width="160" height="50" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg" style="display:block"><rect x="0" y="0" width="160" height="50" fill="#f1f5f9" rx="2"/> <path d="M0.0,16.2 L5.5,24.6 L11.0,18.3 L16.6,24.6 L22.1,31.0 L27.6,33.1 L33.1,33.1 L38.6,33.1 L44.1,33.1 L49.7,35.2 L55.2,37.3 L60.7,39.4 L66.2,39.4 L71.7,41.5 L77.2,41.5 L82.8,45.8 L88.3,45.8 L93.8,47.9 L99.3,45.8 L104.8,45.8 L110.3,47.9 L115.9,39.4 L121.4,41.5 L126.9,43.7 L132.4,41.5 L137.9,45.8 L143.4,43.7 L149.0,47.9 L154.5,47.9 L160.0,50.0" fill="none" stroke="#475569" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <line x1="0" y1="0.0" x2="160" y2="0.0" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4,3"/> <circle cx="160.0" cy="50.0" r="3.5" fill="#1e40af" stroke="#fff" stroke-width="1.2"/></svg></td>
+              <td class="small">兜底</td>
+            </tr><tr>
+              <td><span class="badge b-cont">↻持续</span></td>
+              <td style="text-align:center"><span class="badge b-churn">1分</span></td>
+              <td class="mono">sr2611P5000</td>
+              <td>白糖期权</td>
+              <td>看跌</td>
+              <td class="num">5000.0</td>
+              <td class="num">-2档</td>
+              <td class="num strong">1.5</td>
+              <td class="num">12.825</td>
+              <td class="num">0.12</td>
+              <td class="num">7</td>
+              <td class="num">10564</td>
+              <td class="num">2073</td>
+              <td style="text-align:center"><span class="badge b-churn">换手</span></td>
+              <td style="text-align:center"><span class="badge b-vol-normal">IV分位</span><span class="small" style="display:block">27%</span><br><span class="small c-vol-rich">VRP +0.6%</span><br><span class="small c-vol-rich">标的低波动</span></td>
+              <td style="text-align:center"><span class="small" style="color:var(--accent);font-weight:700">±25% → ×733.33<br>±50% → ×1600.0</span></td>
+              <td style="text-align:center"><span class="small" title="USDA 周度出口销售报告">事件13天</span></td>
+              <td style="text-align:center"><svg width="160" height="50" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg" style="display:block"><rect x="0" y="0" width="160" height="50" fill="#f1f5f9" rx="2"/> <path d="M0.0,2.4 L5.5,6.1 L11.0,0.0 L16.6,8.5 L22.1,17.1 L27.6,17.1 L33.1,19.5 L38.6,14.6 L44.1,17.1 L49.7,25.6 L55.2,32.9 L60.7,31.7 L66.2,31.7 L71.7,35.4 L77.2,39.0 L82.8,41.5 L88.3,43.9 L93.8,46.3 L99.3,45.1 L104.8,42.7 L110.3,45.1 L115.9,35.4 L121.4,39.0 L126.9,40.2 L132.4,37.8 L137.9,40.2 L143.4,40.2 L149.0,43.9 L154.5,47.6 L160.0,50.0" fill="none" stroke="#475569" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <line x1="0" y1="22.4" x2="160" y2="22.4" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4,3"/> <circle cx="160.0" cy="50.0" r="3.5" fill="#1e40af" stroke="#fff" stroke-width="1.2"/></svg></td>
+              <td class="small">兜底</td>
+            </tr><tr>
+              <td><span class="badge b-cont">↻持续</span></td>
+              <td style="text-align:center"><span class="badge b-churn">1分</span></td>
+              <td class="mono">sr2611C5500</td>
+              <td>白糖期权</td>
+              <td>看涨</td>
+              <td class="num">5500.0</td>
+              <td class="num">+3档</td>
+              <td class="num strong">4.0</td>
+              <td class="num">12.825</td>
+              <td class="num">0.31</td>
+              <td class="num">7</td>
+              <td class="num">31029</td>
+              <td class="num">15149</td>
+              <td style="text-align:center"><span class="badge b-churn">换手</span></td>
+              <td style="text-align:center"><span class="badge b-vol-normal">IV分位</span><span class="small" style="display:block">73%</span><br><span class="small c-vol-rich">VRP +0.6%</span><br><span class="small c-vol-rich">标的低波动</span></td>
+              <td style="text-align:center"><span class="small" style="color:var(--accent);font-weight:700">±25% → ×250.0<br>±50% → ×575.0</span></td>
+              <td style="text-align:center"><span class="small" title="USDA 周度出口销售报告">事件13天</span></td>
+              <td style="text-align:center"><svg width="160" height="50" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg" style="display:block"><rect x="0" y="0" width="160" height="50" fill="#f1f5f9" rx="2"/> <path d="M0.0,27.2 L5.5,26.5 L11.0,22.8 L16.6,11.0 L22.1,8.1 L27.6,11.0 L33.1,8.1 L38.6,19.1 L44.1,22.8 L49.7,16.2 L55.2,8.8 L60.7,7.4 L66.2,9.6 L71.7,20.6 L77.2,12.5 L82.8,14.0 L88.3,8.1 L93.8,0.0 L99.3,11.0 L104.8,21.3 L110.3,25.0 L115.9,33.1 L121.4,39.0 L126.9,36.0 L132.4,44.9 L137.9,46.3 L143.4,47.8 L149.0,47.8 L154.5,47.8 L160.0,50.0" fill="none" stroke="#475569" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <line x1="0" y1="37.0" x2="160" y2="37.0" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4,3"/> <circle cx="160.0" cy="50.0" r="3.5" fill="#1e40af" stroke="#fff" stroke-width="1.2"/></svg></td>
+              <td class="small">兜底</td>
+            </tr><tr>
+              <td><span class="badge b-cont">↻持续</span></td>
+              <td style="text-align:center"><span class="badge b-churn">1分</span></td>
+              <td class="mono">sr2611C5400</td>
+              <td>白糖期权</td>
+              <td>看涨</td>
+              <td class="num">5400.0</td>
+              <td class="num">+2档</td>
+              <td class="num strong">8.5</td>
+              <td class="num">12.825</td>
+              <td class="num">0.66</td>
+              <td class="num">7</td>
+              <td class="num">22903</td>
+              <td class="num">11039</td>
+              <td style="text-align:center"><span class="badge b-churn">换手</span></td>
+              <td style="text-align:center"><span class="badge b-vol-normal">IV分位</span><span class="small" style="display:block">64%</span><br><span class="small c-vol-rich">VRP +0.6%</span><br><span class="small c-vol-rich">标的低波动</span></td>
+              <td style="text-align:center"><span class="small" style="color:var(--accent);font-weight:700">±25% → ×129.41<br>±50% → ×282.35</span></td>
+              <td style="text-align:center"><span class="small" title="USDA 周度出口销售报告">事件13天</span></td>
+              <td style="text-align:center"><svg width="160" height="50" viewBox="0 0 160 50" xmlns="http://www.w3.org/2000/svg" style="display:block"><rect x="0" y="0" width="160" height="50" fill="#f1f5f9" rx="2"/> <path d="M0.0,29.0 L5.5,28.5 L11.0,23.7 L16.6,15.6 L22.1,10.8 L27.6,11.8 L33.1,10.2 L38.6,20.4 L44.1,24.7 L49.7,20.4 L55.2,9.7 L60.7,12.4 L66.2,14.0 L71.7,23.1 L77.2,16.7 L82.8,18.3 L88.3,10.8 L93.8,0.0 L99.3,12.4 L104.8,24.2 L110.3,26.3 L115.9,34.4 L121.4,41.9 L126.9,39.2 L132.4,46.8 L137.9,48.4 L143.4,50.0 L149.0,48.9 L154.5,48.9 L160.0,50.0" fill="none" stroke="#475569" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/> <line x1="0" y1="45.3" x2="160" y2="45.3" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="4,3"/> <circle cx="160.0" cy="50.0" r="3.5" fill="#1e40af" stroke="#fff" stroke-width="1.2"/></svg></td>
+              <td class="small">兜底</td>
+            </tr></tbody>
+        </table>
+
+  <h2>📊 主流品种概览与历史表现</h2>
+  <table>
+      <thead><tr>
+        <th>品种</th><th class="num">近月总持仓量</th><th class="num">便宜阈值</th><th class="num">历史30倍+</th>
+        <th class="num">最高倍数</th><th class="num">典型入场价</th><th>10日内合约</th><th class="num">今日命中</th>
+      </tr></thead>
+      <tbody><tr>
+          <td>甲醇期权</td>
+          <td class="num">658635</td>
+          <td class="num">12.2</td>
+          <td class="num">1.4%</td>
+          <td class="num">310×</td>
+          <td class="num">5.0</td>
+          <td class="small">ma2611(剩7日)</td>
+          <td class="num">0</td>
+        </tr><tr>
+          <td>二甲苯期权</td>
+          <td class="num">333930</td>
+          <td class="num">14.0</td>
+          <td class="num">0.7%</td>
+          <td class="num">50×</td>
+          <td class="num">7.75</td>
+          <td class="small">px2611(剩1日)</td>
+          <td class="num">0</td>
+        </tr><tr>
+          <td>棉花期权</td>
+          <td class="num">217750</td>
+          <td class="num">5.6</td>
+          <td class="num">0.1%</td>
+          <td class="num">77×</td>
+          <td class="num">5.0</td>
+          <td class="small">cf2611(剩7日)</td>
+          <td class="num">0</td>
+        </tr><tr>
+          <td>白糖期权</td>
+          <td class="num">210869</td>
+          <td class="num">兜底</td>
+          <td class="num">0次</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+          <td class="small">sr2611(剩7日)</td>
+          <td class="num">5</td>
+        </tr><tr>
+          <td>PTA期权</td>
+          <td class="num">186742</td>
+          <td class="num">26.7</td>
+          <td class="num">1.0%</td>
+          <td class="num">270×</td>
+          <td class="num">15.0</td>
+          <td class="small">ta2611(剩7日)</td>
+          <td class="num">0</td>
+        </tr><tr>
+          <td>碳酸锂期权</td>
+          <td class="num">162049</td>
+          <td class="num">354.0</td>
+          <td class="num">1.9%</td>
+          <td class="num">100×</td>
+          <td class="num">160.0</td>
+          <td class="small">lc2611(剩8日)</td>
+          <td class="num">0</td>
+        </tr><tr>
+          <td>菜籽粕期权</td>
+          <td class="num">160795</td>
+          <td class="num">兜底</td>
+          <td class="num">0次</td>
+          <td class="num">—</td>
+          <td class="num">—</td>
+          <td class="small">rm2611(剩7日)</td>
+          <td class="num">3</td>
+        </tr><tr>
+          <td>烧碱期权</td>
+          <td class="num">118297</td>
+          <td class="num">7.0</td>
+          <td class="num">1.4%</td>
+          <td class="num">603×</td>
+          <td class="num">3.5</td>
+          <td class="small">sh2611(剩7日)</td>
+          <td class="num">1</td>
+        </tr><tr>
+          <td>工业硅期权</td>
+          <td class="num">108690</td>
+          <td class="num">13.2</td>
+          <td class="num">0.1%</td>
+          <td class="num">60×</td>
+          <td class="num">4.0</td>
+          <td class="small">si2611(剩8日)</td>
+          <td class="num">1</td>
+        </tr><tr>
+          <td>花生期权</td>
+          <td class="num">85292</td>
+          <td class="num">0.5</td>
+          <td class="num">0.3%</td>
+          <td class="num">40×</td>
+          <td class="num">0.5</td>
+          <td class="small">pk2611(剩7日)</td>
+          <td class="num">0</td>
+        </tr><tr>
+          <td>菜籽油期权</td>
+          <td class="num">59954</td>
+          <td class="num">5.0</td>
+          <td class="num">1.0%</td>
+          <td class="num">390×</td>
+          <td class="num">3.25</td>
+          <td class="small">oi2611(剩7日)</td>
+          <td class="num">0</td>
+        </tr></tbody>
+    </table>
+
+  <div class="note">
+    <b>筛选口径</b>：主流品种 = 10 日内近月合约总持仓量 ≥ 30000；
+    主流期权 = 单腿持仓量 ≥ 2000（用户口径"数千及以上"）；
+    到期窗口 = 剩余 1–14 个交易日；
+    <b>只看平值上下 3 档</b>：平值行权价由期权链本身估算
+    （看涨≈看跌权利金的交点 ≈ 标的期货现价），仅保留距平值上下各 3 档的合约，过滤深度虚值。<br>
+    <b>"足够便宜"</b>：对每个品种回溯历史已到期合约，在"距到期 ≤ 14 日"的每一天，
+    考察其后 10 个交易日内最高价 / 当日收盘是否 ≥ 30 倍；
+    取所有成功入场价的第 80 分位数作为该品种"便宜阈值"。
+    当前权利金 ≤ 阈值即视为足够便宜。未标定品种使用兜底口径：
+    三层兜底取最大 = (1) 固定下限 0.5 点 (2) 权利金中位数的 30% (3) 正权利金第 20 分位数。<br>
+    <b>新晋标记</b>：🆕新晋 = 该期权今日首次进入便宜区间（昨日不在命中列表）；↻持续 = 昨日已在命中列表中。<br>
+    <b>信号分</b>（组合评分 0~4，与微信推送同一口径）：<span class="badge b-acc">≥2分</span> = 强信号（红色）；1 分=中等（橙）；0 分=基础（灰）。计分 = 新晋+1 / OI增仓+1（减仓-1）/ 低IV或VRP&lt;0 +1 / 情景±25%倍数≥3 +1。看板按信号分从高到低排序。<br>
+    <b>标的活跃度</b>：标的期货 30 日已实现波动率分档——<span class="c-vol-cheap">标的高波动</span>（RV30≥20%，爆发基础好）/ 灰色"标的中/低波动"（低波动品种即使期权便宜，爆炸概率也低，需谨慎）。<br>
+    <b>催化剂</b>：该品种未来 21 天内最近的重要报告/数据（USDA 供需报告、MPOB 棕榈油、OPEC 月报、EIA 库存、非农、FOMC、中国宏观数据等，自动规则生成 + 百度经济日历抓取）。<span class="badge b-hot">事件3天内</span> = 即将引爆（红）；<span class="badge b-churn">7天内</span> = 临近（橙）。便宜期权 + 临近催化剂 = 最佳彩票窗口。<br>
+    <b>反身性</b>：<span class="badge b-hot">🔻反身性</span> = 标的期货下跌 + 该期权 IV 上升 + 持仓量上升同时发生（跌幅&gt;0.5%、IV升幅&gt;5%），市场正在为下跌定价、尾部事件形成中，对看跌彩票是强信号（借鉴 younjc/convexity-scanner 的 reflexivity 检测）。<br>
+    <b>持仓变化</b>（OI 微观结构，较上次扫描的持仓量环比）：<span class="badge b-acc">增仓</span>=持仓显著增加（新资金建仓，值得关注）；<span class="badge b-unw">减仓</span>=持仓显著减少（离场/平仓）；<span class="badge b-churn">换手</span>=高成交量但持仓几乎不变（日内对倒，无方向）；<span class="badge b-static">持平</span>=基本不变；<span class="badge b-new">新</span>=首次观测（新上市或数据首见）。判断标准：|ΔOI| &gt; max(50, 10%×上次OI) 为显著；换手 = 量&gt;50 且 量&gt;5×|ΔOI|。<br>
+    <b>波动率</b>（Black-76 反推隐含波动率，标的价用平值档代理）：<span class="badge b-vol-cheap">低IV</span>=该合约 IV 位于本期权链第 25 分位以内（链内相对便宜的波动率）；<span class="c-vol-cheap">VRP</span>=隐含波动率 − 标的 30 日已实现波动率，VRP&lt;0（蓝色）表示波动率被低估、买方有利，VRP&gt;0（灰色）表示偏贵。<br>
+    <b>情景倍数</b>：假设标的在到期前向有利方向移动 ±25% / ±50%（看涨=涨、看跌=跌），按该合约当前 IV 用 Black-76 前向定价，得出"当前权利金能翻几倍"。红色高亮 = ±25% 情景已超 3 倍（彩票潜力突出）。这是前向估计，不依赖历史 30× 样本。<br>
+    <b>DTE 分段</b>：1–5 日为极致彩票窗口（高 gamma），6–10 日为甜蜜区，11–14 日为温和窗口。<br>
+    <b>走势图</b>：每张命中期权的权利金日线历史 + 红色虚线 = 便宜阈值 + 蓝色圆点 = 当前价。一眼可判断是否有新入场机会。<br>
+    <b>风险提示</b>：深度虚值临期期权是典型"彩票型"合约，30 倍机会是小概率事件，绝大多数会归零。
+    本工具仅做行情监控与提示，<b>不构成任何投资建议</b>。
+  </div>
+</div></body></html>
